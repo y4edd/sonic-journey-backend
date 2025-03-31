@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Favorite_Artist {
+  id            Int      @id @default(autoincrement())
+  user_id       String
+  api_artist_id BigInt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime
+  User          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Favorite_Song {
+  id          Int      @id @default(autoincrement())
+  user_id     String
+  api_song_id BigInt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  User        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model History {
+  id          Int      @id @default(autoincrement())
+  user_id     String
+  api_song_id BigInt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  User        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Pick {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String
+  image       String
+  Pick_Song   Pick_Song[]
+}
+
+model Pick_Song {
+  id          Int    @id @default(autoincrement())
+  pick_id     Int
+  api_song_id BigInt
+  Pick        Pick   @relation(fields: [pick_id], references: [id], onDelete: Cascade)
+}
+
+model Playlist {
+  id            Int             @id @default(autoincrement())
+  user_id       String
+  name          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime
+  User          User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Playlist_Song Playlist_Song[]
+
+  @@unique([user_id, name])
+}
+
+model Playlist_Song {
+  id          Int      @id @default(autoincrement())
+  playlist_id Int
+  api_song_id BigInt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  Playlist    Playlist @relation(fields: [playlist_id], references: [id], onDelete: Cascade)
+
+  @@unique([playlist_id, api_song_id])
+}
+
+model User {
+  id              String            @id
+  email           String            @unique
+  name            String
+  password        String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime
+  Favorite_Artist Favorite_Artist[]
+  Favorite_Song   Favorite_Song[]
+  History         History[]
+  Playlist        Playlist[]
+}
