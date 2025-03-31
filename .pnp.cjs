@@ -36,6 +36,7 @@ const RAW_RUNTIME_STATE =
           ["@nestjs/platform-express", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:11.0.12"],\
           ["@nestjs/schematics", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:11.0.2"],\
           ["@nestjs/testing", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:11.0.12"],\
+          ["@prisma/client", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:6.5.0"],\
           ["@swc/cli", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:0.6.0"],\
           ["@swc/core", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:1.11.13"],\
           ["@types/bcrypt", "npm:5.0.2"],\
@@ -2685,6 +2686,32 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/@pkgr-core-npm-0.2.0-c1161f0259-10c0.zip/node_modules/@pkgr/core/",\
         "packageDependencies": [\
           ["@pkgr/core", "npm:0.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@prisma/client", [\
+      ["npm:6.5.0", {\
+        "packageLocation": "./.yarn/unplugged/@prisma-client-virtual-95f129481e/node_modules/@prisma/client/",\
+        "packageDependencies": [\
+          ["@prisma/client", "npm:6.5.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:6.5.0", {\
+        "packageLocation": "./.yarn/unplugged/@prisma-client-virtual-95f129481e/node_modules/@prisma/client/",\
+        "packageDependencies": [\
+          ["@prisma/client", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:6.5.0"],\
+          ["@types/prisma", null],\
+          ["@types/typescript", null],\
+          ["prisma", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:6.5.0"],\
+          ["typescript", "patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"]\
+        ],\
+        "packagePeers": [\
+          "@types/prisma",\
+          "@types/typescript",\
+          "prisma",\
+          "typescript"\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9958,6 +9985,7 @@ const RAW_RUNTIME_STATE =
           ["@nestjs/platform-express", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:11.0.12"],\
           ["@nestjs/schematics", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:11.0.2"],\
           ["@nestjs/testing", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:11.0.12"],\
+          ["@prisma/client", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:6.5.0"],\
           ["@swc/cli", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:0.6.0"],\
           ["@swc/core", "virtual:69c6a1e625b894e1b1957ba0e5a131b76fa41101a2747ff3e57be1e3c4536854ab11483904fe43cd8bf64f2950dc0dd748c6879bf074700b05dbecf38977da66#npm:1.11.13"],\
           ["@types/bcrypt", "npm:5.0.2"],\
