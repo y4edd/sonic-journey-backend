@@ -11,7 +11,17 @@ export class ArtistService {
   }
 
   async getArtistByWord(word: string): Promise<DeezerArtist> {
-    const response = await fetch(`https://api.deezer.com/search/artist?q=${word}`);
+    const response = await fetch(
+      `https://api.deezer.com/search/artist?q=${word}`,
+    );
+    const res = (await response.json()) as DeezerArtist;
+    return res;
+  }
+
+  async getArtistByGenre(genre: string): Promise<DeezerArtist> {
+    const response = await fetch(
+      `https://api.deezer.com/genre/${genre}/artists`,
+    );
     const res = (await response.json()) as DeezerArtist;
     return res;
   }

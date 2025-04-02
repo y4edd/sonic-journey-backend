@@ -11,9 +11,20 @@ export class ArtistController {
     return this.artistService.getArtistById(id);
   }
 
+  // １つのエンドポイントで複数のクエリを処理するようにする
   @Get()
-  getArtistByWord(@Query('word') word: string) {
-    console.log('wordを受け取りました:', word);
-    return this.artistService.getArtistByWord(word);
+  getArtistByQuery(
+    @Query('word') word?: string,
+    @Query('genre') genre?: string,
+  ) {
+    if (word) {
+      console.log('wordを受け取りました:', word);
+      return this.artistService.getArtistByWord(word);
+    }
+    if (genre) {
+      console.log('genreを受け取りました:', genre);
+      return this.artistService.getArtistByGenre(genre);
+    }
+    return { message: 'クエリパラメータが必要です' };
   }
 }
