@@ -9,4 +9,10 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('test')
+  test() {
+    console.log('✅ /test ルートが呼び出された');
+    return 'test ok';
+  }
 }

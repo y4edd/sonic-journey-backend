@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import cookieParser from 'cookie-parser';
+// import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   // AppModule を使って NestJS アプリケーションのインスタンス（app）を作成する
@@ -11,6 +11,7 @@ async function bootstrap() {
   // リクエストの入力値をアプリ全体でチェックする
   // 「whitelist: true」によってDTOで定義されていないプロパティは自動的に削除される
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  // cookieの認証は必要だけど、バックエンドが公開されないから別にやる意味がない
   // CORSの設定
   app.enableCors({
     // クッキーや認証情報（セッション情報、トークンなど）を
@@ -21,8 +22,9 @@ async function bootstrap() {
 
   // フロントエンドからうけとったcookieを解析できるように
   // ミドルウェアでcookieParserを実行しておく
-  app.use(cookieParser);
+  // app.use(cookieParser);
 
-  await app.listen(process.env.PORT ?? 3005);
+  await app.listen(3005);
+  console.log(`🌟 アプリが起動しました → ${await app.getUrl()}`);
 }
 bootstrap();
