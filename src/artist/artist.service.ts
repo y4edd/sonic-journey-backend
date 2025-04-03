@@ -1,28 +1,43 @@
 import fetch from 'node-fetch';
 import { Injectable } from '@nestjs/common';
-import { DeezerArtist } from './interfaces/artist.interface';
+import { DeezerArtist, DeezerResponse } from './interfaces/artist.interface';
 
 @Injectable()
 export class ArtistService {
-  async getArtistById(id: string): Promise<DeezerArtist> {
+  async getArtistById(id: string) {
     const response = await fetch(`https://api.deezer.com/artist/${id}`);
-    const res = (await response.json()) as DeezerArtist;
+    const res = (await response.json()) as DeezerResponse;
     return res;
   }
 
-  async getArtistByWord(word: string): Promise<DeezerArtist> {
+  async getArtistByWord(word: string, limit: string) {
     const response = await fetch(
-      `https://api.deezer.com/search/artist?q=${word}`,
+      `https://api.deezer.com/search/artist?q=${word}&limit=${limit}`,
     );
-    const res = (await response.json()) as DeezerArtist;
-    return res;
+    const res = (await response.json()) as DeezerResponse;
+
+    const resData = res.data.map((data: DeezerArtist) => {
+      return {
+        id: data.id,
+        name: data.name,
+        picture_xl: data.picture_xl,
+      };
+    });
+    return resData;
   }
 
-  async getArtistByGenre(genre: string): Promise<DeezerArtist> {
+  async getArtistByGenre(genre: number, limit: string) {
     const response = await fetch(
-      `https://api.deezer.com/genre/${genre}/artists`,
+      `https://api.deezer.com/genre/${genre}/artists&limit=${limit}`,
     );
-    const res = (await response.json()) as DeezerArtist;
-    return res;
+    const res = (await response.json()) as DeezerResponse;
+    const resData = res.data.map((data: DeezerArtist) => {
+      return {
+        id: data.id,
+        name: data.name,
+        picture_xl: data.picture_xl,
+      };
+    });
+    return resData;
   }
 }

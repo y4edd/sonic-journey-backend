@@ -14,3 +14,7 @@ export interface DeezerArtist {
   tracklist: string;
   type: string;
 }
+
+export interface DeezerResponse {
+  data: DeezerArtist[];
+}
