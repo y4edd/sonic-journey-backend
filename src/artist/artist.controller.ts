@@ -21,11 +21,11 @@ export class ArtistController {
   ) {
     console.log('limit', limit);
     if (word) {
-      console.log('wordを受け取りました:', word);
+      console.log('artistにてwordを受け取りました:', word);
       return this.artistService.getArtistByWord(word, limit);
     }
     if (genre) {
-      console.log('genreを受け取りました:', genre);
+      console.log('artistにてgenreを受け取りました:', genre);
       return this.artistService.getArtistByGenre(genre, limit);
     }
     return { message: 'クエリパラメータが必要です' };
