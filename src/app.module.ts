@@ -11,10 +11,35 @@ import { SongModule } from './song/song.module';
 import { GenreService } from './genre/genre.service';
 import { GenreController } from './genre/genre.controller';
 import { GenreModule } from './genre/genre.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { PickModule } from './pick/pick.module';
+import { PrismaService } from './prisma/prisma.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ArtistModule, AlbumModule, SongModule, GenreModule],
-  controllers: [AppController, AlbumController, SongController, GenreController],
-  providers: [AppService, AlbumService, SongService, GenreService],
+  imports: [
+    // prismaの中で使われているConfigモジュールをどこでも使えるようにしておく
+    // ※ConfigModuleは環境変数を扱いやすくするようにするModuleです
+    ConfigModule.forRoot({ isGlobal: true }),
+    ArtistModule,
+    AlbumModule,
+    SongModule,
+    GenreModule,
+    PrismaModule,
+    PickModule,
+  ],
+  controllers: [
+    AppController,
+    AlbumController,
+    SongController,
+    GenreController,
+  ],
+  providers: [
+    AppService,
+    AlbumService,
+    SongService,
+    GenreService,
+    PrismaService,
+  ],
 })
 export class AppModule {}
