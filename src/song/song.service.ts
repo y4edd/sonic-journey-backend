@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { DeezerSongs, DeezerTrack } from './interfaces/song.interface';
+import {
+  DeezerNewRelease,
+  DeezerNewSongs,
+  DeezerSongs,
+  DeezerTrack,
+} from './interfaces/song.interface';
 
 @Injectable()
 export class SongService {
@@ -65,7 +70,6 @@ export class SongService {
     }
 
     const songData = (await response.json()) as DeezerTrack;
-    console.log('songData', songData);
 
     const resSongData = {
       id: songData.id,
@@ -83,7 +87,55 @@ export class SongService {
         cover_xl: songData.album.cover_xl ?? '/images/defaultsong.png',
       },
     };
-    console.log('resSongData', resSongData);
     return resSongData;
+  }
+
+  async getRankingSong(limit: number) {
+    const response = await fetch(
+      `https://api.deezer.com/chart/0/tracks?limit=${limit}`,
+    );
+    if (!response) {
+      console.error('楽曲情報が見つかりませんでした');
+    }
+    const res = (await response.json()) as DeezerSongs;
+    const resultData = res.data.map((data: DeezerTrack) => {
+      return {
+        id: data.id,
+        title: data.title ?? 'title',
+        artist: {
+          id: data.artist.id,
+          name: data.artist.name ?? 'artist',
+        },
+        album: {
+          id: data.album.id,
+          title: data.album.title ?? 'album',
+          cover_xl: data.album.cover_xl ?? '/images/defaultsong.png',
+        },
+      };
+    });
+    return resultData;
+  }
+
+  async getNewSong(limit: number) {
+    const response = await fetch(
+      `https://api.deezer.com/editorial/16/releases?limit=${limit}`,
+    );
+    if (!response) {
+      console.error('新着楽曲が見つかりませんでした');
+    }
+    const res = (await response.json()) as DeezerNewSongs;
+    const resultData = res.data.map((data: DeezerNewRelease) => {
+      return {
+        id: data.id,
+        title: data.title ?? 'album',
+        cover_xl: data.cover_xl ?? '/images/defaultsong.png',
+        release_date: data.release_date ?? 'release_date',
+        artist: {
+          id: data.artist.id,
+          name: data.artist.name ?? 'artist',
+        },
+      };
+    });
+    return resultData;
   }
 }

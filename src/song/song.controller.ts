@@ -1,9 +1,24 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { SongService } from './song.service';
 
 @Controller('song')
 export class SongController {
   constructor(private readonly songService: SongService) {}
+
+  // ランキング楽曲
+  @Get('ranking')
+  // limitを自動的にnumberに変換
+  getRankingSong(@Query('limit', ParseIntPipe) limit: number) {
+    console.log('rankingエンドポイントが叩かれました');
+    return this.songService.getRankingSong(limit);
+  }
+  // 新曲
+  @Get('new')
+  getNewSong(@Query('limit', ParseIntPipe) limit: number) {
+    console.log('newエンドポイントが叩かれました');
+    return this.songService.getNewSong(limit);
+  }
+
   // アーティストのIDから人気曲を取得する関数
   @Get()
   getSongByQuery(
