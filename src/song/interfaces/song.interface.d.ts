@@ -23,3 +23,28 @@ export interface DeezerTrack {
 export interface DeezerSongs {
   data: DeezerTrack[];
 }
+
+// deezerにて楽曲情報を取得した際の型
+export interface DeezerNewRelease {
+  id: number;
+  title: string;
+  cover: string;
+  cover_small: string;
+  cover_medium: string;
+  cover_big: string;
+  cover_xl: string;
+  md5_image: string;
+  release_date: string;
+  tracklist: string;
+  artist: {
+    id: number;
+    name: string;
+    tracklist: string;
+    type: string;
+  };
+  type: string;
+}
+
+export interface DeezerNewSongs {
+  data: DeezerNewRelease[];
+}
