@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-// import * as cookieParser from 'cookie-parser';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   // AppModule を使って NestJS アプリケーションのインスタンス（app）を作成する
@@ -22,7 +22,7 @@ async function bootstrap() {
 
   // フロントエンドからうけとったcookieを解析できるように
   // ミドルウェアでcookieParserを実行しておく
-  // app.use(cookieParser);
+  app.use(cookieParser());
 
   await app.listen(3005);
   console.log(`🌟 アプリが起動しました → ${await app.getUrl()}`);
