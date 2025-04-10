@@ -15,6 +15,9 @@ import { PrismaModule } from './prisma/prisma.module';
 import { PickModule } from './pick/pick.module';
 import { PrismaService } from './prisma/prisma.service';
 import { ConfigModule } from '@nestjs/config';
+import { UserService } from './user/user.service';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +30,8 @@ import { ConfigModule } from '@nestjs/config';
     GenreModule,
     PrismaModule,
     PickModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [
     AppController,
@@ -40,6 +45,7 @@ import { ConfigModule } from '@nestjs/config';
     SongService,
     GenreService,
     PrismaService,
+    UserService,
   ],
 })
 export class AppModule {}
