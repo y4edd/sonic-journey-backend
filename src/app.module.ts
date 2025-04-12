@@ -18,6 +18,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
     PickModule,
     UserModule,
     AuthModule,
+    FavoriteModule,
   ],
   controllers: [
     AppController,
