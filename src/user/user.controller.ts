@@ -12,7 +12,7 @@ import {
 import { UserService } from './user.service';
 import { RegisterDTO } from './dto/user.dto';
 import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/auth/guards/cookie-auth.guard';
 import { Response } from 'express';
 
 @Controller('user')

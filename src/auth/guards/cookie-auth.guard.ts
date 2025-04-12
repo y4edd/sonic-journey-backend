@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload, RequestWithCookies } from './interfaces/auth.interface';
+import { JwtPayload, RequestWithCookies } from '../interfaces/auth.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 // NestJSはマルチプロトコル対応
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
     const token = request.cookies?.access_token;
 
     if (!token) {
-      throw new UnauthorizedException('トークンが見つかりません');
+      return false;
     }
 
     try {
