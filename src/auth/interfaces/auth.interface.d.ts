@@ -20,8 +20,12 @@ export interface JwtPayload {
   email: string;
 }
 
-export interface AuthrizationPayload {
+export interface AuthorizationPayload {
   sub: string;
   iat: number;
   exp: number;
+}
+
+export interface RequestWithAuthorizationHeader extends Request {
+  user: string;
 }

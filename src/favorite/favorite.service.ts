@@ -1,9 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { ArtistsDTO } from 'src/artist/dto/artist.dto';
 import {
-  AuthrizationPayload,
+  RequestWithAuthorizationHeader,
   RequestWithCookies,
 } from 'src/auth/interfaces/auth.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -11,30 +9,10 @@ import { SongsDTO } from 'src/song/dto/song.dto';
 
 @Injectable()
 export class FavoriteService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly jwt: JwtService,
-    private readonly config: ConfigService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async getSong(request: Request) {
-    // Authorizationヘッダーを使ったので、ここから取得
-    const authHeader = request.headers.authorization;
-
-    // 解析し、userIdを取得
-    const token = authHeader?.split('=')[1];
-    if (!token) {
-      throw new ForbiddenException('トークンが存在しません');
-    }
-    const payload: AuthrizationPayload = await this.jwt.verifyAsync(token, {
-      secret: this.config.get('JWT_SECRET_KEY'),
-    });
-
-    if (!payload) {
-      throw new ForbiddenException('秘密鍵は存在しません');
-    }
-
-    const userId = payload.sub;
+  async getSong(request: RequestWithAuthorizationHeader) {
+    const userId = request.user;
 
     const favSongs = await this.prisma.favorite_Song.findMany({
       where: {
@@ -95,6 +73,81 @@ export class FavoriteService {
       data: {
         user_id: userId,
         api_song_id: BigInt(id),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
+    return {
+      message: 'ok',
+    };
+  }
+
+  async getArtist(request: RequestWithAuthorizationHeader) {
+    // Guardにより付与されたユーザーIDを取得
+    const userId = request.user;
+    if (!userId) {
+      throw new ForbiddenException('ユーザーが存在しません');
+    }
+
+    const favArtists = await this.prisma.favorite_Artist.findMany({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    // BigIntをstringに変換
+    const formatted = favArtists.map((artist) => ({
+      ...artist,
+      api_artist_id: artist.api_artist_id.toString(),
+    }));
+
+    return formatted;
+  }
+
+  async deleteArtist(request: RequestWithCookies, dto: ArtistsDTO) {
+    // Guardにより付与されたユーザーIDを取得
+    const userId = request.user?.id;
+    if (!userId) {
+      throw new ForbiddenException('ユーザーが存在しません');
+    }
+
+    await this.prisma.favorite_Artist.deleteMany({
+      where: {
+        user_id: userId,
+        api_artist_id: {
+          in: dto.artistIds,
+        },
+      },
+    });
+
+    return {
+      message: 'ok',
+    };
+  }
+
+  async postArtist(request: RequestWithCookies, id: number) {
+    // Guardにより付与されたユーザーIDを取得
+    const userId = request.user?.id;
+    if (!userId) {
+      throw new ForbiddenException('ユーザーが存在しません');
+    }
+
+    // すでにお気に入りに登録されていないかか確認する
+    const isFav = await this.prisma.favorite_Artist.findFirst({
+      where: {
+        user_id: userId,
+        api_artist_id: id,
+      },
+    });
+
+    if (isFav) {
+      throw new ForbiddenException('すでにお気に入り登録済みです');
+    }
+
+    await this.prisma.favorite_Artist.create({
+      data: {
+        user_id: userId,
+        api_artist_id: BigInt(id),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
