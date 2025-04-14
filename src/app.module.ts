@@ -19,6 +19,7 @@ import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { FavoriteModule } from './favorite/favorite.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { FavoriteModule } from './favorite/favorite.module';
     UserModule,
     AuthModule,
     FavoriteModule,
+    HistoryModule,
   ],
   controllers: [
     AppController,
