@@ -28,20 +28,25 @@ export class PlaylistService {
     return playlist;
   }
 
-  async getPlaylistCSR(request: RequestWithCookies) {
+  async getPlaylistCSR(request: RequestWithCookies, id: number) {
     const userId = request.user?.id;
 
     if (!userId) {
       return { message: 'プレイリストの取得にはログインが必要です' };
     }
 
-    const playlist = await this.prisma.playlist.findMany({
+    const playlist = await this.prisma.playlist_Song.findMany({
       where: {
-        user_id: userId,
+        playlist_id: id,
       },
     });
 
-    return playlist;
+    const playlists = playlist.map((p) => {
+      const numberApi = Number(p.api_song_id);
+      return numberApi;
+    });
+
+    return playlists;
   }
 
   async postPlaylist(request: RequestWithCookies, dto: PlaylistDTO) {
@@ -185,10 +190,10 @@ export class PlaylistService {
     const songId = BigInt(id);
 
     for (const ele of dto.playlists) {
-      if (ele.musicFlag) {
+      if (!ele.musicFlag) {
         const submitCheck = await this.prisma.playlist_Song.findFirst({
           where: {
-            playlist_id: ele.playlistId,
+            playlist_id: Number(ele.playlistId),
             api_song_id: songId,
           },
         });
