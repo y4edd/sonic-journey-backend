@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
     const token = request.cookies?.access_token;
 
     if (!token) {
-      return false;
+      return true;
     }
 
     try {

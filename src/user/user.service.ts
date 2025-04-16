@@ -43,7 +43,14 @@ export class UserService {
     }
   }
 
-  async getUser(token: string) {
+  async getUser(request: RequestWithCookies) {
+    const token = request.user?.id;
+    if (!token) {
+      return {
+        message: 'ok',
+      };
+    }
+
     const userInfo = await this.prisma.user.findFirst({
       where: {
         id: token,
