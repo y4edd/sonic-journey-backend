@@ -85,8 +85,9 @@ export class FavoriteService {
   async getArtist(request: RequestWithAuthorizationHeader) {
     // Guardにより付与されたユーザーIDを取得
     const userId = request.user;
+    // 非ログの状態でエラーが起きる必要はないため早期リターン
     if (!userId) {
-      throw new ForbiddenException('ユーザーが存在しません');
+      return;
     }
 
     const favArtists = await this.prisma.favorite_Artist.findMany({

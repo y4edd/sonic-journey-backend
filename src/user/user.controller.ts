@@ -32,7 +32,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get('me')
   getUser(@Req() request: RequestWithCookies) {
-    return request.user;
+    return this.userService.getUser(request);
   }
 
   // ユーザー情報を編集する

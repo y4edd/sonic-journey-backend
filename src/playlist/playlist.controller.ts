@@ -37,9 +37,12 @@ export class PlaylistController {
   // ユーザーIDからプレイリストを取得
   // クライアントサイド
   @UseGuards(AuthGuard)
-  @Get('/csr')
-  async getPlaylistCSR(@Request() request: RequestWithCookies) {
-    return this.playlistService.getPlaylistCSR(request);
+  @Get('/csr/:id')
+  async getPlaylistCSR(
+    @Request() request: RequestWithCookies,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.playlistService.getPlaylistCSR(request, id);
   }
   // プレイリストを新規作成する
   @UseGuards(AuthGuard)
@@ -104,6 +107,8 @@ export class PlaylistController {
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: DiffPlaylistsDTO,
   ) {
+    console.log('楽曲id', id);
+    console.log('playlist', dto);
     return this.playlistService.deleteSongPlaylist(request, id, dto);
   }
 }
