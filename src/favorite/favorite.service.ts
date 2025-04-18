@@ -13,6 +13,9 @@ export class FavoriteService {
 
   async getSong(request: RequestWithAuthorizationHeader) {
     const userId = request.user;
+    if (!userId) {
+      return;
+    }
 
     const favSongs = await this.prisma.favorite_Song.findMany({
       where: {

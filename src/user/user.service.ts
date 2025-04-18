@@ -48,6 +48,7 @@ export class UserService {
     if (!token) {
       return {
         message: 'ok',
+        id: '',
       };
     }
 
