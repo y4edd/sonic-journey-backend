@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArtistModule } from './artist/artist.module';
@@ -21,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
 import { FavoriteModule } from './favorite/favorite.module';
 import { HistoryModule } from './history/history.module';
 import { PlaylistModule } from './playlist/playlist.module';
+import { AuthMiddleware } from './auth/middleware/auth.middleware';
 
 @Module({
   imports: [
@@ -54,4 +55,10 @@ import { PlaylistModule } from './playlist/playlist.module';
     UserService,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes('/favorite/*path', 'user/*path', 'playlist/*path');
+  }
+}
