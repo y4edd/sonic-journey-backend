@@ -1,8 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import {
-  RequestWithAuthorizationHeader,
-  RequestWithCookies,
-} from 'src/auth/interfaces/auth.interface';
+import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
   DiffPlaylistsDTO,
@@ -13,9 +10,8 @@ import {
 @Injectable()
 export class PlaylistService {
   constructor(private readonly prisma: PrismaService) {}
-  async getPlaylist(request: RequestWithAuthorizationHeader) {
-    const user = request.user;
-
+  async getPlaylist(request: RequestWithCookies) {
+    const user = request.user?.id;
     if (!user) {
       return { message: 'プレイリストの取得にはログインが必要です' };
     }
@@ -80,8 +76,8 @@ export class PlaylistService {
     };
   }
 
-  async getSong(request: RequestWithAuthorizationHeader, id: number) {
-    const user = request.user;
+  async getSong(request: RequestWithCookies, id: number) {
+    const user = request.user?.id;
 
     if (!user) {
       return { message: '再生履歴の保存にはログインが必要です' };

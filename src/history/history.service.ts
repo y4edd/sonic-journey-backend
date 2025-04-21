@@ -1,9 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { HistoryDTO } from './dto/history.dto';
-import {
-  RequestWithAuthorizationHeader,
-  RequestWithCookies,
-} from 'src/auth/interfaces/auth.interface';
+import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -63,10 +60,14 @@ export class HistoryService {
     };
   }
 
-  async getHistory(request: RequestWithAuthorizationHeader, limit: number) {
-    const user = request.user;
+  async getHistory(request: RequestWithCookies, limit: number) {
+    if (!request.user) {
+      throw new UnauthorizedException('ユーザー情報が存在しません');
+    }
+
+    const user = request.user?.id;
     if (!user) {
-      return { message: '再生履歴の取得にはログインが必要です' };
+      throw new UnauthorizedException('ログインしてください');
     }
 
     const playHistoryIds = await this.prisma.history.findMany({
@@ -89,8 +90,8 @@ export class HistoryService {
     return songIds;
   }
 
-  async deleteHistory(request: RequestWithAuthorizationHeader) {
-    const user = request.user;
+  async deleteHistory(request: RequestWithCookies) {
+    const user = request.user?.id;
     if (!user) {
       return { message: '再生履歴の取得にはログインが必要です' };
     }

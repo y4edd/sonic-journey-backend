@@ -1,9 +1,10 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { ArtistsDTO } from 'src/artist/dto/artist.dto';
 import {
-  RequestWithAuthorizationHeader,
-  RequestWithCookies,
-} from 'src/auth/interfaces/auth.interface';
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { ArtistsDTO } from 'src/artist/dto/artist.dto';
+import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SongsDTO } from 'src/song/dto/song.dto';
 
@@ -11,10 +12,10 @@ import { SongsDTO } from 'src/song/dto/song.dto';
 export class FavoriteService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getSong(request: RequestWithAuthorizationHeader) {
-    const userId = request.user;
+  async getSong(request: RequestWithCookies) {
+    const userId = request.user?.id;
     if (!userId) {
-      return;
+      throw new UnauthorizedException('ログインユーザー限定の機能です');
     }
 
     const favSongs = await this.prisma.favorite_Song.findMany({
@@ -85,12 +86,12 @@ export class FavoriteService {
     };
   }
 
-  async getArtist(request: RequestWithAuthorizationHeader) {
+  async getArtist(request: RequestWithCookies) {
     // Guardにより付与されたユーザーIDを取得
-    const userId = request.user;
+    const userId = request.user?.id;
     // 非ログの状態でエラーが起きる必要はないため早期リターン
     if (!userId) {
-      return;
+      throw new UnauthorizedException('ログインユーザー限定の機能です');
     }
 
     const favArtists = await this.prisma.favorite_Artist.findMany({
