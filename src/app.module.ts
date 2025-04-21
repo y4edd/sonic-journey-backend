@@ -59,6 +59,14 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes('/favorite/*path', 'user/*path', 'playlist/*path');
+      .forRoutes(
+        '/favorite',
+        '/favorite/*path',
+        'user/*path',
+        '/playlist',
+        '/playlist/*path',
+        '/history',
+        '/history/*path',
+      );
   }
 }

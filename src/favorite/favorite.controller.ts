@@ -10,10 +10,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
-import {
-  RequestWithAuthorizationHeader,
-  RequestWithCookies,
-} from 'src/auth/interfaces/auth.interface';
+import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
 import { SongsDTO } from 'src/song/dto/song.dto';
 import { ArtistsDTO } from 'src/artist/dto/artist.dto';
 
@@ -23,7 +20,7 @@ export class FavoriteController {
 
   // 楽曲
   @Get('song')
-  getSong(@Req() request: RequestWithAuthorizationHeader) {
+  getSong(@Req() request: RequestWithCookies) {
     return this.favoriteService.getSong(request);
   }
 
@@ -43,7 +40,7 @@ export class FavoriteController {
 
   // アーティスト
   @Get('artist')
-  getArtist(@Req() request: RequestWithAuthorizationHeader) {
+  getArtist(@Req() request: RequestWithCookies) {
     return this.favoriteService.getArtist(request);
   }
 

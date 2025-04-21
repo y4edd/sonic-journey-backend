@@ -10,10 +10,7 @@ import {
 } from '@nestjs/common';
 import { HistoryService } from './history.service';
 import { HistoryDTO } from './dto/history.dto';
-import {
-  RequestWithAuthorizationHeader,
-  RequestWithCookies,
-} from 'src/auth/interfaces/auth.interface';
+import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
 
 @Controller('history')
 export class HistoryController {
@@ -28,13 +25,13 @@ export class HistoryController {
   }
 
   @Delete()
-  async deleteHistory(@Req() request: RequestWithAuthorizationHeader) {
+  async deleteHistory(@Req() request: RequestWithCookies) {
     return this.historyService.deleteHistory(request);
   }
 
   @Get()
   async getHistory(
-    @Req() request: RequestWithAuthorizationHeader,
+    @Req() request: RequestWithCookies,
     @Query('limit', ParseIntPipe) limit: number,
   ) {
     return this.historyService.getHistory(request, limit);

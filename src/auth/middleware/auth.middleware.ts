@@ -45,7 +45,6 @@ export class AuthMiddleware implements NestMiddleware {
 
       if (!user) throw new UnauthorizedException('ユーザーが存在しません');
       req.user = user;
-
       return next();
     } catch (err) {
       console.error('[AuthMiddleware] トークン検証失敗', err);

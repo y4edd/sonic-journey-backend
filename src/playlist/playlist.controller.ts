@@ -10,10 +10,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
-import {
-  RequestWithAuthorizationHeader,
-  RequestWithCookies,
-} from 'src/auth/interfaces/auth.interface';
+import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
 import {
   DiffPlaylistsDTO,
   PlaylistDTO,
@@ -26,7 +23,7 @@ export class PlaylistController {
   // サーバーサイドから取得すること
   // ユーザーIDからプレイリストを取得
   @Get()
-  async getPlaylist(@Request() request: RequestWithAuthorizationHeader) {
+  async getPlaylist(@Request() request: RequestWithCookies) {
     return this.playlistService.getPlaylist(request);
   }
 
@@ -53,7 +50,7 @@ export class PlaylistController {
   // サーバーサイド
   @Get(':id')
   getSong(
-    @Request() request: RequestWithAuthorizationHeader,
+    @Request() request: RequestWithCookies,
     @Param('id', ParseIntPipe) id: number,
   ) {
     return this.playlistService.getSong(request, id);

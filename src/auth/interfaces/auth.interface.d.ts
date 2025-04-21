@@ -7,7 +7,7 @@ export interface RequestWithCookies extends Request {
   cookies: {
     access_token: string;
   };
-  user: {
+  user?: {
     id: string;
     email: string;
     name: string;
