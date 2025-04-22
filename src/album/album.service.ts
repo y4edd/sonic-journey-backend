@@ -8,32 +8,37 @@ import {
 @Injectable()
 export class AlbumService {
   async getAlbumById(id: number) {
-    const response = await fetch(`https://api.deezer.com/album/${id}`);
-    const res = (await response.json()) as DeezerAlbum;
-    // trackから楽曲たちを取り出し、必要なものだけにする
-    const albumSongs = res.tracks.data.map((song) => {
-      return {
-        id: song.id,
-        title: song.title ?? 'title',
-        duration: song.duration ?? '不明',
-        preview: song.preview,
-        cover_xl: song.album.cover_xl ?? '/images/defaultsong.png',
+    try {
+      const response = await fetch(`https://api.deezer.com/album/${id}`);
+      const res = (await response.json()) as DeezerAlbum;
+      // trackから楽曲たちを取り出し、必要なものだけにする
+      const albumSongs = res.tracks.data.map((song) => {
+        return {
+          id: song.id,
+          title: song.title ?? 'title',
+          duration: song.duration ?? '不明',
+          preview: song.preview,
+          cover_xl: song.album.cover_xl ?? '/images/defaultsong.png',
+        };
+      });
+      // レスポンスとして返却するためのデータを整理する
+      const resultData = {
+        id: res.id,
+        title: res.title ?? 'title',
+        cover_xl: res.cover_xl ?? '/images/defaultsong.png',
+        nb_tracks: res.nb_tracks ?? '不明',
+        artist: {
+          id: res.artist.id,
+          name: res.artist.name ?? 'artist',
+          picture_xl: res.artist.picture_xl ?? '/images/defaultsong.png',
+        },
+        albumSongs,
       };
-    });
-    // レスポンスとして返却するためのデータを整理する
-    const resultData = {
-      id: res.id,
-      title: res.title ?? 'title',
-      cover_xl: res.cover_xl ?? '/images/defaultsong.png',
-      nb_tracks: res.nb_tracks ?? '不明',
-      artist: {
-        id: res.artist.id,
-        name: res.artist.name ?? 'artist',
-        picture_xl: res.artist.picture_xl ?? '/images/defaultsong.png',
-      },
-      albumSongs,
-    };
-    return resultData;
+      return resultData;
+    } catch (err) {
+      console.error('API取得に失敗:', err);
+      return null;
+    }
   }
 
   async getAlbumByArtistName(artistName: string, limit: number) {
@@ -58,6 +63,7 @@ export class AlbumService {
       return resultData;
     } catch (error) {
       console.error(error);
+      return null;
     }
   }
 }

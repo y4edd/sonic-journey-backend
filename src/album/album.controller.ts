@@ -8,7 +8,6 @@ export class AlbumController {
   // アルバムIDからアルバム情報を取得する
   @Get(':id')
   getAlbum(@Param('id') id: number) {
-    console.log('albumId取得', id);
     return this.albumService.getAlbumById(id);
   }
 
@@ -18,7 +17,6 @@ export class AlbumController {
     @Query('artist') artistName: string,
     @Query('limit') limit: number,
   ) {
-    console.log('albumにて、artistを取得', artistName);
     return this.albumService.getAlbumByArtistName(artistName, limit);
   }
 }
