@@ -7,13 +7,11 @@ export class PickController {
 
   @Get()
   async getPick() {
-    console.log('pickにGETリクエスト送信');
     return this.pickService.getPick();
   }
 
   @Get(':id')
   async getPickSong(@Param('id') id: number) {
-    console.log('pickのIDを取得', id);
     return this.pickService.getPickSong(id);
   }
 }
