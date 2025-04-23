@@ -8,7 +8,6 @@ export class ArtistController {
   // IDからアーティスト情報をDeezerAPIより取得
   @Get(':id')
   getArtist(@Param('id') id: string) {
-    console.log('IDを受け取りました:', id);
     return this.artistService.getArtistById(id);
   }
 
@@ -19,13 +18,10 @@ export class ArtistController {
     @Query('genre') genre: number,
     @Query('limit') limit: string,
   ) {
-    console.log('limit', limit);
     if (word) {
-      console.log('artistにてwordを受け取りました:', word);
       return this.artistService.getArtistByWord(word, limit);
     }
     if (genre) {
-      console.log('artistにてgenreを受け取りました:', genre);
       return this.artistService.getArtistByGenre(genre, limit);
     }
     return { message: 'クエリパラメータが必要です' };
