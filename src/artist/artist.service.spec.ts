@@ -23,6 +23,7 @@ describe('ArtistService', () => {
       providers: [ArtistService],
     }).compile();
 
+    // 「module」というDIコンテナのような存在からArtistServiceのインスタンスを取り戻す
     artistService = module.get<ArtistService>(ArtistService);
   });
 
