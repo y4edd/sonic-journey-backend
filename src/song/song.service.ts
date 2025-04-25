@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   DeezerNewRelease,
   DeezerNewSongs,
@@ -91,51 +91,62 @@ export class SongService {
   }
 
   async getRankingSong(limit: number) {
-    const response = await fetch(
-      `https://api.deezer.com/chart/0/tracks?limit=${limit}`,
-    );
-    if (!response) {
-      console.error('楽曲情報が見つかりませんでした');
+    try {
+      const response = await fetch(
+        `https://api.deezer.com/chart/0/tracks?limit=${limit}`,
+      );
+      if (!response.ok) {
+        console.error('検索結果なし');
+      }
+      const res = (await response.json()) as DeezerSongs;
+      const resultData = res.data.map((data: DeezerTrack) => {
+        return {
+          id: data.id,
+          title: data.title ?? 'title',
+          artist: {
+            id: data.artist.id,
+            name: data.artist.name ?? 'artist',
+          },
+          album: {
+            id: data.album.id,
+            title: data.album.title ?? 'album',
+            cover_xl: data.album.cover_xl ?? '/images/defaultsong.png',
+          },
+        };
+      });
+      return resultData;
+    } catch (err) {
+      // これは検索結果なしorDeezerからのエラーが全て検索結果なしに集約される
+      console.error(err);
+      throw new NotFoundException('検索結果なし');
     }
-    const res = (await response.json()) as DeezerSongs;
-    const resultData = res.data.map((data: DeezerTrack) => {
-      return {
-        id: data.id,
-        title: data.title ?? 'title',
-        artist: {
-          id: data.artist.id,
-          name: data.artist.name ?? 'artist',
-        },
-        album: {
-          id: data.album.id,
-          title: data.album.title ?? 'album',
-          cover_xl: data.album.cover_xl ?? '/images/defaultsong.png',
-        },
-      };
-    });
-    return resultData;
   }
 
   async getNewSong(limit: number) {
-    const response = await fetch(
-      `https://api.deezer.com/editorial/16/releases?limit=${limit}`,
-    );
-    if (!response) {
-      console.error('新着楽曲が見つかりませんでした');
+    try {
+      const response = await fetch(
+        `https://api.deezer.com/editorial/16/releases?limit=${limit}`,
+      );
+      if (!response) {
+        console.error('新着楽曲が見つかりませんでした');
+      }
+      const res = (await response.json()) as DeezerNewSongs;
+      const resultData = res.data.map((data: DeezerNewRelease) => {
+        return {
+          id: data.id,
+          title: data.title ?? 'album',
+          cover_xl: data.cover_xl ?? '/images/defaultsong.png',
+          release_date: data.release_date ?? 'release_date',
+          artist: {
+            id: data.artist.id,
+            name: data.artist.name ?? 'artist',
+          },
+        };
+      });
+      return resultData;
+    } catch (err) {
+      console.error(err);
+      throw new NotFoundException('新曲の取得に失敗');
     }
-    const res = (await response.json()) as DeezerNewSongs;
-    const resultData = res.data.map((data: DeezerNewRelease) => {
-      return {
-        id: data.id,
-        title: data.title ?? 'album',
-        cover_xl: data.cover_xl ?? '/images/defaultsong.png',
-        release_date: data.release_date ?? 'release_date',
-        artist: {
-          id: data.artist.id,
-          name: data.artist.name ?? 'artist',
-        },
-      };
-    });
-    return resultData;
   }
 }

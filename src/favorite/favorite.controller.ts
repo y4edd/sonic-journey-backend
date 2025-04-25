@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { FavoriteService } from './favorite.service';
 import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
-import { SongsDTO } from 'src/song/dto/song.dto';
+import { SongsDTO } from 'src/song/interfaces/song.interface';
 import { ArtistsDTO } from 'src/artist/dto/artist.dto';
 
 @Controller('favorite')

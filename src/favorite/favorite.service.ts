@@ -6,7 +6,7 @@ import {
 import { ArtistsDTO } from 'src/artist/dto/artist.dto';
 import { RequestWithCookies } from 'src/auth/interfaces/auth.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { SongsDTO } from 'src/song/dto/song.dto';
+import { SongsDTO } from 'src/song/interfaces/song.interface';
 
 @Injectable()
 export class FavoriteService {
