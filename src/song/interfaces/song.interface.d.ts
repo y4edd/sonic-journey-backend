@@ -48,3 +48,7 @@ export interface DeezerNewRelease {
 export interface DeezerNewSongs {
   data: DeezerNewRelease[];
 }
+
+export interface SongsDTO {
+  songIds: number[];
+}
