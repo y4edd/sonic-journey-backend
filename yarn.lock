@@ -2154,7 +2154,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bcrypt@npm:^5":
+"@types/bcrypt@npm:^5.0.2":
   version: 5.0.2
   resolution: "@types/bcrypt@npm:5.0.2"
   dependencies:
@@ -6037,6 +6037,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-mock-extended@npm:^4.0.0-beta1":
+  version: 4.0.0-beta1
+  resolution: "jest-mock-extended@npm:4.0.0-beta1"
+  dependencies:
+    ts-essentials: "npm:^10.0.2"
+  peerDependencies:
+    "@jest/globals": ^28.0.0 || ^29.0.0
+    jest: ^24.0.0 || ^25.0.0 || ^26.0.0 || ^27.0.0 || ^28.0.0 || ^29.0.0
+    typescript: ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: 10c0/8a0638f0c6db54407a1b8a4342356af55f95a8d2f821c879d13f289f945ddf7315c744a070309e8ebbaa414a6fcb4ca1eb553dbfc26ecc4d3dac712289603f7c
+  languageName: node
+  linkType: hard
+
 "jest-mock@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest-mock@npm:29.7.0"
@@ -8261,7 +8274,7 @@ __metadata:
     "@prisma/client": "npm:^6.5.0"
     "@swc/cli": "npm:^0.6.0"
     "@swc/core": "npm:^1.10.7"
-    "@types/bcrypt": "npm:^5"
+    "@types/bcrypt": "npm:^5.0.2"
     "@types/cookie-parser": "npm:^1.4.8"
     "@types/express": "npm:^5.0.0"
     "@types/jest": "npm:^29.5.14"
@@ -8280,6 +8293,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.2.2"
     globals: "npm:^16.0.0"
     jest: "npm:^29.7.0"
+    jest-mock-extended: "npm:^4.0.0-beta1"
     jwks-rsa: "npm:^3.2.0"
     node-fetch: "npm:^3.3.2"
     passport: "npm:^0.7.0"
@@ -8770,6 +8784,18 @@ __metadata:
   peerDependencies:
     typescript: ">=4.8.4"
   checksum: 10c0/9806a38adea2db0f6aa217ccc6bc9c391ddba338a9fe3080676d0d50ed806d305bb90e8cef0276e793d28c8a929f400abb184ddd7ff83a416959c0f4d2ce754f
+  languageName: node
+  linkType: hard
+
+"ts-essentials@npm:^10.0.2":
+  version: 10.0.4
+  resolution: "ts-essentials@npm:10.0.4"
+  peerDependencies:
+    typescript: ">=4.5.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/99a5dd3ae6ed885e0f6cdb9556c07ba5c9e00d447a58a3308440739d624bcd92d370f8bb060ae7a2992023b4a03acdf669ac8f1e0427b3fbc792a2857f85ab0d
   languageName: node
   linkType: hard
 
