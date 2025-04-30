@@ -7,7 +7,6 @@ import {
   Post,
   Req,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterDTO } from './dto/user.dto';
@@ -21,13 +20,10 @@ export class UserController {
   // ユーザー登録
   @Post()
   signUp(@Body() dto: RegisterDTO) {
-    console.log('サインアップはしる');
     return this.userService.signUp(dto);
   }
 
   // ユーザー情報を取得する
-  // ここでAuthGuardを使い、Cookieの中のJWTを
-  // 改ざんがないか、ユーザーIDは何かを検証する
   @Get('me')
   getUser(@Req() request: RequestWithCookies) {
     return this.userService.getUser(request);
@@ -46,7 +42,6 @@ export class UserController {
     // NestJSに任せる（+expressのcookie機能も使いたい）
     @Res({ passthrough: true }) response: Response,
   ) {
-    console.log('delete走る');
     // JWTなどが入っているcookie名に応じて削除
     response.clearCookie('access_token', {
       httpOnly: true,
