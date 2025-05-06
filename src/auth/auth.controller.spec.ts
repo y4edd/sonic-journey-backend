@@ -33,7 +33,7 @@ describe('AuthController', () => {
       );
 
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(mockRes.cookie).toHaveBeenCalled(); // 呼ばれた回数が気になるなら
+      expect(mockRes.cookie).toHaveBeenCalled();
     });
   });
 
