@@ -28,14 +28,14 @@ async function bootstrap() {
   // NestJS上で出力するSwaggerドキュメントの情報を定義する
   const options = new DocumentBuilder()
     .setTitle('APIDocs')
-    .setDescription('説明文が入ります')
+    .setDescription('APIの仕様書です')
     .setVersion('1.0')
     .build();
 
   // ドキュメントの定義
   const document = SwaggerModule.createDocument(app, options);
-  // ドキュメントの起動
-  SwaggerModule.setup('api-docs', app, document);
+  // ドキュメントの起動(/docsでAPIの仕様書を確認できる)
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(3005);
 }

@@ -1,28 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import {
-  ArtistAlbum,
-  ArtistAlbums,
-  DeezerAlbum,
-} from './interfaces/album.interface';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ArtistAlbums, DeezerAlbum } from './interfaces/album.interface';
 
 @Injectable()
 export class AlbumService {
   async getAlbumById(id: number) {
     try {
       const response = await fetch(`https://api.deezer.com/album/${id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch album');
+      }
+
       const res = (await response.json()) as DeezerAlbum;
-      // trackから楽曲たちを取り出し、必要なものだけにする
-      const albumSongs = res.tracks.data.map((song) => {
-        return {
-          id: song.id,
-          title: song.title ?? 'title',
-          duration: song.duration ?? '不明',
-          preview: song.preview,
-          cover_xl: song.album.cover_xl ?? '/images/defaultsong.png',
-        };
-      });
-      // レスポンスとして返却するためのデータを整理する
-      const resultData = {
+      if (!res.id) {
+        return null;
+      }
+
+      const albumSongs = res.tracks.data.map((song) => ({
+        id: song.id,
+        title: song.title ?? 'title',
+        duration: song.duration ?? '不明',
+        preview: song.preview,
+        cover_xl: song.album.cover_xl ?? '/images/defaultsong.png',
+      }));
+
+      return {
         id: res.id,
         title: res.title ?? 'title',
         cover_xl: res.cover_xl ?? '/images/defaultsong.png',
@@ -34,10 +35,11 @@ export class AlbumService {
         },
         albumSongs,
       };
-      return resultData;
     } catch (err) {
       console.error('API取得に失敗:', err);
-      return null;
+      throw new InternalServerErrorException(
+        'アルバム情報の取得に失敗しました',
+      );
     }
   }
 
@@ -46,24 +48,24 @@ export class AlbumService {
       const response = await fetch(
         `https://api.deezer.com/search/album?q=${artistName}&limit=${limit}`,
       );
-      if (!response) {
-        console.error('アーティストのアルバムが見つかりませんでした');
+      if (!response.ok) {
+        throw new Error('Failed to fetch albums');
       }
+
       const res = (await response.json()) as ArtistAlbums;
-      const resultData = res.data.map((data: ArtistAlbum) => {
-        return {
-          id: data.id,
-          title: data.title,
-          cover_xl: data.cover_xl,
-          artist: {
-            name: data.artist.name,
-          },
-        };
-      });
-      return resultData;
+      return res.data.map((data) => ({
+        id: data.id,
+        title: data.title,
+        cover_xl: data.cover_xl,
+        artist: {
+          name: data.artist.name,
+        },
+      }));
     } catch (error) {
-      console.error(error);
-      return null;
+      console.error('API取得に失敗:', error);
+      throw new InternalServerErrorException(
+        'アーティストのアルバム取得に失敗しました',
+      );
     }
   }
 }

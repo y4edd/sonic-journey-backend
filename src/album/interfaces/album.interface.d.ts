@@ -32,6 +32,7 @@ export interface DeezerAlbumInfo {
   md5_image: string;
   tracklist: string;
   type: string;
+  artist: DeezerArtist;
 }
 
 export interface DeezerAlbum {
