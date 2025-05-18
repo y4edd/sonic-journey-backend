@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   // AppModule を使って NestJS アプリケーションのインスタンス（app）を作成する
@@ -24,7 +25,18 @@ async function bootstrap() {
   // ミドルウェアでcookieParserを実行しておく
   app.use(cookieParser());
 
+  // NestJS上で出力するSwaggerドキュメントの情報を定義する
+  const options = new DocumentBuilder()
+    .setTitle('APIDocs')
+    .setDescription('説明文が入ります')
+    .setVersion('1.0')
+    .build();
+
+  // ドキュメントの定義
+  const document = SwaggerModule.createDocument(app, options);
+  // ドキュメントの起動
+  SwaggerModule.setup('api-docs', app, document);
+
   await app.listen(3005);
-  console.log(`🌟 アプリが起動しました → ${await app.getUrl()}`);
 }
 bootstrap();
