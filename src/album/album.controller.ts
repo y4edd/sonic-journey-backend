@@ -8,11 +8,15 @@ import {
 import { AlbumService } from './album.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AlbumDto } from './dto/album.dto';
+import { MyLogger } from 'src/logger/logger';
 
 @ApiTags('Album')
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService) {}
+  constructor(
+    private readonly albumService: AlbumService,
+    private readonly logger: MyLogger,
+  ) {}
 
   @Get(':id')
   @ApiOperation({ summary: 'IDからアルバム情報を取得する' })
@@ -24,10 +28,12 @@ export class AlbumController {
   @ApiResponse({ status: 404, description: 'アルバムが見つかりませんでした' })
   @ApiResponse({ status: 500, description: 'サーバーエラー' })
   async getAlbum(@Param('id') id: number) {
+    this.logger.log(`AlbumController: Fetching album with ID: ${id}`);
     const album = await this.albumService.getAlbumById(id);
     if (!album) {
       throw new NotFoundException('アルバムが見つかりませんでした');
     }
+    this.logger.log(`AlbumController: Successfully fetched album: ${id}`);
     return album;
   }
 

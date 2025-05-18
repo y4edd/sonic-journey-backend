@@ -22,6 +22,8 @@ import { FavoriteModule } from './favorite/favorite.module';
 import { HistoryModule } from './history/history.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import { AuthMiddleware } from './auth/middleware/auth.middleware';
+import { MyLogger } from './logger/logger';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
@@ -39,6 +41,7 @@ import { AuthMiddleware } from './auth/middleware/auth.middleware';
     FavoriteModule,
     HistoryModule,
     PlaylistModule,
+    LoggerModule,
   ],
   controllers: [
     AppController,
@@ -53,7 +56,10 @@ import { AuthMiddleware } from './auth/middleware/auth.middleware';
     GenreService,
     PrismaService,
     UserService,
+    MyLogger,
   ],
+  // 他のモジュールでも使えるようにエクスポート
+  exports: [MyLogger],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
