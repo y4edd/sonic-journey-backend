@@ -5,7 +5,6 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { MyLogger } from './logger.service';
 import { Request, Response } from 'express';
 
