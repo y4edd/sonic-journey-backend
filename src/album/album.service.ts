@@ -1,14 +1,9 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ArtistAlbums, DeezerAlbum } from './interfaces/album.interface';
-import { MyLogger } from 'src/logger/logger';
 
 @Injectable()
 export class AlbumService {
-  constructor(private readonly logger: MyLogger) {}
   async getAlbumById(id: number) {
-    this.logger.log(
-      `AlbumService: Searching album in the database for ID: ${id}`,
-    );
     try {
       const response = await fetch(`https://api.deezer.com/album/${id}`);
       if (!response.ok) {
@@ -27,7 +22,6 @@ export class AlbumService {
         preview: song.preview,
         cover_xl: song.album.cover_xl ?? '/images/defaultsong.png',
       }));
-      this.logger.log('AlbumService: Found album');
       return {
         id: res.id,
         title: res.title ?? 'title',
@@ -41,10 +35,7 @@ export class AlbumService {
         albumSongs,
       };
     } catch (err) {
-      this.logger.log(`error occured: ${err}`);
-      throw new InternalServerErrorException(
-        'アルバム情報の取得に失敗しました',
-      );
+      throw new InternalServerErrorException(err);
     }
   }
 
@@ -58,9 +49,6 @@ export class AlbumService {
       }
 
       const res = (await response.json()) as ArtistAlbums;
-      this.logger.log(
-        `AlbumService: Searching album in the database for NAME: ${artistName}`,
-      );
       return res.data.map((data) => ({
         id: data.id,
         title: data.title,
@@ -70,10 +58,7 @@ export class AlbumService {
         },
       }));
     } catch (err) {
-      this.logger.log(`error occured: ${err}`);
-      throw new InternalServerErrorException(
-        'アーティストのアルバム取得に失敗しました',
-      );
+      throw new InternalServerErrorException(err);
     }
   }
 }

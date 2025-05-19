@@ -22,8 +22,9 @@ import { FavoriteModule } from './favorite/favorite.module';
 import { HistoryModule } from './history/history.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import { AuthMiddleware } from './auth/middleware/auth.middleware';
-import { MyLogger } from './logger/logger';
-import { LoggerModule } from './logger/logger.module';
+import { MyLogger } from './logger/logger.service';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './logger/logger.interceptor';
 
 @Module({
   imports: [
@@ -41,7 +42,6 @@ import { LoggerModule } from './logger/logger.module';
     FavoriteModule,
     HistoryModule,
     PlaylistModule,
-    LoggerModule,
   ],
   controllers: [
     AppController,
@@ -57,9 +57,11 @@ import { LoggerModule } from './logger/logger.module';
     PrismaService,
     UserService,
     MyLogger,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
   ],
-  // 他のモジュールでも使えるようにエクスポート
-  exports: [MyLogger],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

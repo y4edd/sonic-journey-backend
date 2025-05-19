@@ -3,16 +3,12 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { MyLogger } from './logger/logger';
-import { LoggingInterceptor } from './logger/logger.interceptor';
+import { MyLogger } from './logger/logger.service';
 
 async function bootstrap() {
   // AppModule を使って NestJS アプリケーションのインスタンス（app）を作成する
   const app = await NestFactory.create(AppModule);
   const logger = new MyLogger();
-
-  // グローバル Interceptor を設定
-  app.useGlobalInterceptors(new LoggingInterceptor(new MyLogger()));
 
   // ValidationPipe というNestJSに組み込まれているパイプクラスを使って、
   // リクエストの入力値をアプリ全体でチェックする
